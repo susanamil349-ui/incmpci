@@ -862,7 +862,8 @@
             // --- API & App State ---
             const apiKey = "AIzaSyBvK75_CwE4jKKMiMHeYe6_8vh5tRoYRmU"; // API key is injected by the environment
             const textMultimodalApi = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-            const imageUrlApi = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
+            const imageUrlApi = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
             const imageToImageApi = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${apiKey}`;
             
             let originalImageData = null, uploadedImages = [], selectedStyleKey = '', customStyles = {};
