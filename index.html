@@ -708,9 +708,15 @@
         import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // --- FIREBASE CONFIG ---
-        const firebaseConfig = typeof __firebase_config !== 'undefined' 
-            ? JSON.parse(__firebase_config) 
-            : null;
+        const firebaseConfig = {
+  apiKey: "AIzaSyDY3ECh29-wbSkTxcYjo0k_5MbpJ06eW3w",
+  authDomain: "geal-ai-pro.firebaseapp.com",
+  projectId: "geal-ai-pro",
+  storageBucket: "geal-ai-pro.firebasestorage.app",
+  messagingSenderId: "168080953217",
+  appId: "1:168080953217:web:5974fe48ddc868814f6280",
+  measurementId: "G-6221GXB1T4"
+};
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         
         let db, auth;
