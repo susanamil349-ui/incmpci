@@ -1,131 +1,2114 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GEAL • AI PRO</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      font-family: 'Space Mono', monospace;
-      background-color: #0a0a0a;
-      color: #e0e0e0;
-      padding: 2rem;
-    }
-    .panel {
-      background-color: #111;
-      border: 1px solid #333;
-      padding: 1.5rem;
-      border-radius: 4px;
-    }
-    .btn {
-      background-color: #e0e0e0;
-      color: #0a0a0a;
-      padding: 0.75rem 1.5rem;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-    .btn:hover {
-      background-color: #0a0a0a;
-      color: #e0e0e0;
-      border: 1px solid #e0e0e0;
-    }
-    textarea {
-      width: 100%;
-      min-height: 120px;
-      padding: 0.75rem;
-      background-color: transparent;
-      border: 1px solid #333;
-      color: #e0e0e0;
-    }
-    #output {
-      white-space: pre-wrap;
-      color: #ccc;
-      background-color: #111;
-      border: 1px solid #333;
-      padding: 1rem;
-      border-radius: 4px;
-      margin-top: 1rem;
-      min-height: 100px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEAL • AI PRO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root, html[data-theme="dark"] { /* Dark Mode */
+            --bg-primary: #0a0a0a;
+            --bg-surface: #111111;
+            --text-primary: #e0e0e0;
+            --text-secondary: #888888;
+            --border-color: #333333;
+            --accent-blue: #0D99FF;
+            --accent-red: #FF4500;
+        }
+
+        html[data-theme="light"] { /* Light Mode */
+            --bg-primary: #f5f5f5;
+            --bg-surface: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --border-color: #cccccc;
+            --accent-blue: #0077cc;
+            --accent-red: #d93000;
+        }
+
+        html[data-theme="dark-azure"] { /* Dark Azure Theme */
+            --bg-primary: #1a202c;
+            --bg-surface: #2d3748;
+            --text-primary: #e2e8f0;
+            --text-secondary: #a0aec0;
+            --border-color: #4a5568;
+            --accent-blue: #4299e1;
+            --accent-red: #e53e3e;
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .panel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 0;
+        }
+
+        .panel-header {
+            padding: 0.75rem 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-weight: 400;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+        }
+
+        .panel-content {
+            padding: 1.25rem;
+        }
+        
+        .form-input {
+            background-color: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 0;
+            transition: border-color 0.2s ease;
+            padding: 0.5rem 0;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: none;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0;
+            font-weight: 400;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            background-color: transparent;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.875rem;
+        }
+        .btn:hover:not(:disabled) {
+            background-color: var(--text-primary);
+            color: var(--bg-primary);
+            border-color: var(--text-primary);
+        }
+        .btn:disabled {
+            color: var(--text-secondary);
+            border-color: var(--border-color);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .btn-primary {
+            background-color: var(--text-primary);
+            color: var(--bg-primary);
+            border: 1px solid var(--text-primary);
+        }
+        .btn-primary:hover:not(:disabled) {
+            background-color: transparent;
+            color: var(--text-primary);
+        }
+
+        .btn.selected {
+            background-color: var(--text-primary);
+            color: var(--bg-primary);
+            border-color: var(--text-primary);
+        }
+        
+        /* Styles for the segmented style mode control */
+        .style-mode-btn, .view-mode-btn {
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            background-color: transparent;
+            color: var(--text-secondary);
+        }
+        .style-mode-btn.selected, .view-mode-btn.selected {
+            background-color: var(--text-primary);
+            color: var(--bg-primary);
+            border-color: var(--text-primary);
+            /* Important: Keep buttons square/unrounded */
+            border-radius: 0 !important;
+        }
+        .btn-apply-style {
+            background-color: var(--accent-blue) !important;
+            color: var(--bg-primary) !important;
+            border-color: var(--accent-blue) !important;
+        }
+        .btn-apply-style:hover:not(:disabled) {
+            background-color: transparent !important;
+            color: var(--accent-blue) !important;
+            border-color: var(--accent-blue) !important;
+        }
+
+        .style-btn {
+            border: 1px solid var(--border-color);
+            background-color: transparent;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            padding: 0.75rem;
+            text-align: center;
+            border-radius: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: relative;
+        }
+        .style-btn:hover {
+            background-color: var(--border-color);
+            color: var(--text-primary);
+        }
+        .style-btn.selected {
+            background-color: var(--text-primary);
+            color: var(--bg-primary);
+            border-color: var(--text-primary);
+        }
+        .custom-style-btn {
+            height: auto;
+            gap: 0.5rem;
+        }
+        .style-thumbnail {
+            width: 100%;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 0;
+            border: 1px solid var(--border-color);
+        }
+        
+        .remove-style-btn {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 20px;
+            height: 20px;
+            background-color: var(--accent-red);
+            color: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+            opacity: 1;
+            border: 1px solid var(--border-color);
+        }
+        
+        /* NEW: View Prompt Button */
+        .view-prompt-btn {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background-color: var(--bg-surface);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+            opacity: 0.7; /* Make it subtle */
+            border: 1px solid var(--border-color);
+        }
+        .style-btn:hover .view-prompt-btn {
+            opacity: 1;
+            color: var(--text-primary);
+        }
+
+
+        /* --- Canvas Aspect Ratio Styles --- */
+        #imageDisplayArea {
+            background-color: var(--bg-primary); 
+            position: relative;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+        
+        #canvasAspectRatioWrapper {
+            height: 0; 
+            width: 100%;
+            position: relative;
+            padding-bottom: 100%; 
+        }
+        
+        #aspectContent {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg-primary);
+        }
+        
+        #generatedImage {
+            object-fit: contain; 
+        }
+
+        .asset-card {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 0;
+            padding: 0.75rem;
+        }
+        .asset-image-preview {
+            border-radius: 0;
+            border: 1px solid var(--border-color);
+        }
+        
+        .modal-backdrop {
+            background-color: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+        }
+
+        body.modal-open {
+            overflow: hidden;
+            position: fixed; 
+            width: 100%;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        .simple-loader {
+            width: 80px;
+            height: 4px;
+            background-color: var(--text-primary);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes spinner-spin {
+            to { transform: rotate(360deg); }
+        }
+        .simple-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--border-color);
+            border-top-color: var(--text-primary);
+            border-radius: 50%;
+            animation: spinner-spin 1s linear infinite;
+        }
+
+
+        /* Edit Canvas */
+        #maskCanvas { cursor: crosshair; }
+        #canvasWrapper { border: 1px solid var(--border-color); }
+        
+        /* Theme Toggle */
+        #theme-toggle-container {
+            border: 1px solid var(--border-color);
+        }
+        #theme-toggle {
+            height: 20px;
+            width: 68px;
+            position: relative;
+        }
+        #theme-indicator {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            height: 16px;
+            width: 16px;
+            background-color: var(--text-primary);
+            transition: transform 0.3s ease;
+        }
+
+        /* Camera Angle Specific Styles */
+        .angle-category {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent-blue);
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 0.25rem;
+        }
+
+        .angle-btn-detail {
+             font-size: 0.75rem;
+             text-align: left;
+             padding: 0.5rem 0.75rem;
+             border: 1px solid var(--border-color);
+             margin-bottom: 0.25rem;
+        }
+        .angle-btn-detail:hover {
+            border-color: var(--text-primary);
+        }
+        .angle-btn-detail.selected {
+            background-color: var(--text-primary);
+            color: var(--bg-primary);
+            border-color: var(--text-primary);
+        }
+
+        .tweak-btn {
+             font-size: 0.7rem;
+             text-align: center;
+             padding: 0.4rem 0.6rem;
+             border: 1px solid var(--border-color);
+             margin: 2px;
+             line-height: 1.2;
+        }
+        .tweak-btn:hover {
+            border-color: var(--text-primary);
+            color: var(--text-primary);
+        }
+    </style>
 </head>
+<body class="p-4 md:p-6">
+    <div id="mainContainer" class="max-w-7xl w-full mx-auto">
+        <header class="relative text-center mb-8">
+            <h1 class="text-2xl md:text-3xl font-bold tracking-[0.3em] uppercase">GEAL • AI PRO</h1>
+        </header>
 
-<body>
-  <div class="max-w-3xl mx-auto space-y-6">
-    <header class="text-center">
-      <h1 class="text-3xl font-bold tracking-[0.3em] uppercase">GEAL • AI PRO</h1>
-      <p class="text-sm text-gray-500 mt-1">Powered by Google Gemini API</p>
-    </header>
+        <main>
+            <div id="generationMode" class="flex flex-col lg:grid lg:grid-cols-[400px_1fr] gap-6">
+                
+                <div class="panel flex-grow lg:order-2 overflow-hidden flex flex-col h-full">
+                    <!-- MOVED theme-toggle-wrapper TO HERE -->
+                    <div class="panel-header flex justify-between items-center">
+                        <!-- MODIFIED: Removed (1:1 Fixed Ratio) -->
+                        <span>Canvas</span>
+                        <div id="theme-toggle-wrapper" class="flex items-center space-x-2">
+                            <span id="theme-label" class="text-xs uppercase tracking-widest hidden sm:inline"></span>
+                            <div id="theme-toggle-container" class="p-1">
+                                <button id="theme-toggle">
+                                    <div id="theme-indicator"></div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-content flex flex-col flex-grow">
+                        
+                        <div class="w-full flex-grow flex items-center justify-center p-4 h-full">
+                            <div id="imageDisplayArea" class="w-full h-full relative cursor-pointer">
+                                <div id="canvasAspectRatioWrapper">
+                                    <div id="aspectContent">
+                                        
+                                        <div id="unifiedLoadingOverlay" class="absolute inset-0 bg-[var(--bg-primary)] bg-opacity-90 flex flex-col items-center justify-center hidden z-20">
+                                            <div id="loaderIconContainer" class="mb-4 h-24 w-24 flex items-center justify-center"></div>
+                                            <p id="loaderMessage" class="mb-2 text-[var(--text-secondary)]"></p>
+                                            <div class="w-1/2 bg-[var(--border-color)] h-px"><div id="loaderProgressBar" class="bg-[var(--text-primary)] h-px transition-all duration-500" style="width: 0%;"></div></div>
+                                        </div>
+            
+                                        <p id="imagePlaceholder" class="text-[var(--text-secondary)] text-center p-4">Generated image will appear here. Upload an asset or generate one first!</p>
+                                        <img id="generatedImage" src="" alt="Generated Image" class="hidden max-h-full max-w-full">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="postImageButtons" class="flex flex-row w-full flex-wrap justify-center gap-2 mt-4 hidden">
+                             <button id="cameraViewBtn" class="btn">View</button>
+                             <button id="generateViewBtn" class="btn btn-primary hidden">Generate View</button>
+                             <button id="describeImageBtn" class="btn">Describe</button>
+                             <button id="createStoryBtn" class="btn">Story</button>
+                             <button id="editBtn" class="btn">Edit</button>
+                             <button id="downloadBtn" class="btn">Download</button>
+                        </div>
+                        <div id="imageDescriptionContainer" class="mt-4 bg-transparent p-3 border border-[var(--border-color)] hidden"><p id="imageDescription" class="text-[var(--text-secondary)] text-sm"></p></div>
+                    
+                    </div>
+                </div>
 
-    <main class="space-y-4">
-      <section class="panel">
-        <h2 class="text-lg font-semibold mb-2 uppercase tracking-widest">Prompt</h2>
-        <textarea id="promptInput" placeholder="Enter your prompt..."></textarea>
-        <button id="generateBtn" class="btn w-full mt-4">Generate</button>
-      </section>
+                <div class="flex flex-col space-y-6 lg:order-1">
+                    <section class="panel">
+                        <!-- MOVED theme-toggle-wrapper FROM HERE -->
+                        <div class="panel-header flex justify-between items-center">
+                            <span>Prompt</span>
+                        </div>
+                        <div class="panel-content space-y-4">
+                            <textarea id="imagePrompt" rows="5" class="form-input w-full" placeholder="Enter a prompt..."></textarea>
+                            
+                            <div class="grid grid-cols-3 gap-2">
+                                <button id="refinePromptBtn" class="btn">Refine</button>
+                                <button id="generateIdeaBtn" class="btn">Idea</button>
+                                <button id="clearPromptBtn" class="btn">Clear</button>
+                            </div>
+                            
+                            <div class="relative">
+                                <button id="addAssetTagBtn" class="btn w-full">Add Asset Tag</button>
+                                <div id="assetSelectionPopover" class="absolute z-10 top-full mt-1 w-full bg-[var(--bg-surface)] border border-[var(--border-color)] hidden">
+                                    <div id="assetTagList" class="p-1 space-y-1"></div>
+                                </div>
+                            </div>
 
-      <section class="panel">
-        <h2 class="text-lg font-semibold mb-2 uppercase tracking-widest">Gemini Response</h2>
-        <div id="output">Response will appear here...</div>
-      </section>
-    </main>
-  </div>
+                            <!-- MOVED usageStats TO HERE -->
+                            <div id="usageStats" class="text-right text-[0.625rem] leading-tight text-[var(--text-secondary)] tracking-widest pt-2 border-t border-[var(--border-color)] mt-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="h-3 w-3 inline-block mr-1" viewBox="0 0 16 16"><path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/></svg>
+                                (24h 0m / 0g)
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <button id="generateBtn" class="btn btn-primary w-full h-14">Generate</button>
 
-  <script>
-  const apiKey = "AIzaSyBvK75_CwE4jKKMiMHeYe6_8vh5tRoYRmU";
-  const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-image:generateContent?key=${apiKey}`;
+                    <div class="flex justify-between items-center mb-2 mt-4">
+                        <h2 class="text-lg font-bold uppercase tracking-widest">Style Preset</h2>
+                         <div class="flex items-center space-x-2">
+                            <button id="gealEditorBtn" class="btn !p-2" title="Open GEAL Style Studio">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="h-4 w-4" viewBox="0 0 16 16">
+                                    <path d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05c-.58-.58-.58-1.519 0-2.098L6.95.435z"/>
+                                </svg>
+                            </button>
+                            <button id="importStyleBtn" class="btn !p-2" title="Import style from .geal file">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="h-4 w-4" viewBox="0 0 16 16">
+                                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L6.354 8.146a.5.5 0 0 0-.708.708l2 2z"/>
+                                </svg>
+                            </button>
+                            <input type="file" id="importStyleInput" accept=".geal" class="hidden">
+                            
+                            <button id="exportStyleBtn" class="btn !p-2" title="Export selected style to .geal file" disabled>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="h-4 w-4" viewBox="0 0 16 16">
+                                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                    <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L6.354 4.854a.5.5 0 1 1-.708-.708l2-2z"/>
+                                </svg>
+                            </button>
 
-  const promptInput = document.getElementById("promptInput");
-  const output = document.getElementById("output"); // can be a <div> or <p>
-  const imageBox = document.getElementById("imageBox"); // your <img id="imageBox">
-  const generateBtn = document.getElementById("generateBtn");
+                            <button id="addStyleBtn" class="btn !p-2" title="Add style from image(s)">
+                               +
+                            </button>
+                        </div>
+                    </div>
 
-  generateBtn.addEventListener("click", async () => {
-    const prompt = promptInput.value.trim();
-    if (!prompt) {
-      output.textContent = "⚠️ Please enter a prompt first.";
-      return;
-    }
+                    <div id="styleModeSelector" class="bg-[var(--bg-surface)] p-1 border border-[var(--border-color)] flex w-full">
+                        <button data-mode="prompt" id="modePromptBtn" class="style-mode-btn flex-1 p-2 text-xs uppercase tracking-widest" title="Generates a new image using the style's text prompt.">Prompt Style</button>
+                        <button data-mode="transfer" id="modeTransferBtn" class="style-mode-btn flex-1 p-2 text-xs uppercase tracking-widest" title="Re-draws the current image using the selected style. (Requires an image)">Image Style</button>
+                    </div>
 
-    output.textContent = "🎨 Generating image...";
+                    <section class="panel !mt-0">
+                        <div class="panel-content">
+                            <div id="styleContainer" class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                            </div>
+                        </div>
+                    </section>
+                    
 
-    try {
-      const res = await fetch(geminiUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [
-            {
-              role: "user",
-              parts: [{ text: prompt }]
+                    <section class="panel">
+                        <div class="panel-header">Assets</div>
+                        <div class="panel-content space-y-4">
+                            <input type="file" id="fileInput" accept="image/*" multiple class="hidden">
+                             <div class="grid grid-cols-2 gap-2">
+                                <button id="uploadAssetBtn" class="btn w-full">Upload</button>
+                                <button id="clearAssetsBtn" class="btn w-full">Clear</button>
+                            </div>
+                            <div id="uploadedImageContainer" class="grid grid-cols-2 gap-2 pt-2">
+                                <p class="col-span-full text-sm text-[var(--text-secondary)]">Upload reference images.</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    
+    <!-- Edit Image Modal -->
+    <div id="editModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden modal-backdrop">
+        <div class="panel w-full max-w-6xl max-h-[95vh] flex flex-col bg-[var(--bg-primary)]">
+            <div class="panel-header">Edit Image</div>
+            <div class="panel-content flex-grow overflow-y-auto">
+                 <div class="flex flex-col lg:grid lg:grid-cols-[400px_1fr] gap-6">
+                    <section class="panel">
+                        <div class="panel-header">Step 1: Content</div>
+                        <div class="panel-content space-y-6">
+                            <div class="flex flex-col space-y-2">
+                                <h4 class="text-sm font-semibold uppercase tracking-widest">Prompt</h4>
+                                <p class="text-xs text-[var(--text-secondary)]">Describe what to generate in the masked area.</p>
+                                <textarea id="inpaintingPrompt" rows="2" class="form-input w-full" placeholder="e.g. 'A small red dragon'"></textarea>
+                            </div>
+                            <div class="flex flex-col space-y-2">
+                                 <h4 class="text-sm font-semibold uppercase tracking-widest">Reference (Optional)</h4>
+                                <input type="file" id="inpaintingRefFileInput" accept="image/*" class="hidden">
+                                <div class="flex items-center space-x-3">
+                                    <button id="uploadInpaintingRefBtn" class="btn flex-1 text-sm">Upload</button>
+                                    <button id="removeInpaintingRefBtn" class="btn !p-2 h-10 w-10 hidden" title="Remove">X</button>
+                                </div>
+                                <img id="inpaintingRefPreview" src="" alt="Reference Preview" class="hidden border border-[var(--border-color)] mt-2">
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section class="panel flex flex-col space-y-6">
+                        <div class="panel-header flex justify-between items-center">
+                            <span>Step 2: Area</span>
+                            <div class="flex items-center space-x-2">
+                                 <button id="brushBtn" class="btn !p-2 h-8 w-8" title="Brush">B</button>
+                                 <button id="eraseBtn" class="btn !p-2 h-8 w-8" title="Eraser">E</button>
+                                 <button id="resetBtn" class="btn !p-2 h-8 w-8" title="Reset">R</button>
+                            </div>
+                        </div>
+                        <div class="flex justify-center bg-transparent p-4 relative flex-1 min-h-[350px]">
+                            <div id="canvasWrapper" class="relative max-w-full h-auto">
+                                <canvas id="imageCanvas" class="hidden"></canvas>
+                                <canvas id="maskCanvas" class="absolute top-0 left-0"></canvas>
+                            </div>
+                        </div>
+                        <div class="panel-content pt-4 border-t border-[var(--border-color)]">
+                            <label for="brushSizeSlider" class="text-sm uppercase tracking-widest mb-2 block">Brush Size: <span id="brushSizeValue">20</span></label>
+                            <input type="range" id="brushSizeSlider" min="5" max="100" value="20" class="w-full h-1 bg-[var(--border-color)] appearance-none cursor-pointer">
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="panel-content border-t border-[var(--border-color)]">
+                 <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 justify-end">
+                    <button id="cancelEditBtn" class="btn flex-1 sm:flex-initial">Cancel</button>
+                    <button id="applyChangesBtn" class="btn btn-primary flex-1 sm:flex-initial">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Camera Angle Modal -->
+    <div id="cameraAngleModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden modal-backdrop">
+        <div class="panel w-full max-w-sm bg-[var(--bg-primary)] max-h-[90vh] flex flex-col">
+            <div class="panel-header">Select Camera Angle</div>
+            <div class="panel-content space-y-4 flex-grow overflow-y-auto">
+                
+                <div class="space-y-2">
+                    <h4 class="text-sm font-semibold uppercase tracking-widest text-[var(--text-secondary)]">View Mode</h4>
+                    <div id="viewModeSelector" class="flex w-full border border-[var(--border-color)]">
+                        <button data-mode="rotate_image" class="view-mode-btn flex-1 p-2 text-xs uppercase tracking-widest" title="Rotates the entire image and scene.">Rotate Image</button>
+                        <button data-mode="rotate_subject" class="view-mode-btn flex-1 p-2 text-xs uppercase tracking-widest" title="Rotates only the subject, locking the background.">Rotate Subject</button>
+                    </div>
+                </div>
+
+                <h4 class="text-sm font-semibold uppercase tracking-widest text-[var(--text-secondary)] border-b border-[var(--border-color)] pb-2">Angle Presets (Cinematic Precision)</h4>
+                <div id="angleOptionsContainer" class="pr-2 space-y-1">
+                </div>
+            </div>
+            <div class="panel-content border-t border-[var(--border-color)]">
+                <div class="flex justify-end space-x-2">
+                    <button id="cancelAngleBtn" class="btn">Cancel</button>
+                    <button id="confirmAngleBtn" class="btn btn-primary" disabled>Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GEAL Style Studio Modal -->
+    <div id="gealEditorModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden modal-backdrop">
+        <div class="panel w-full max-w-2xl bg-[var(--bg-primary)] max-h-[90vh] flex flex-col">
+            <div class="panel-header">GEAL Style Studio</div>
+            <div class="panel-content flex-grow overflow-y-auto space-y-6">
+                
+                <!-- MODIFIED: Added '1.' -->
+                <div class="space-y-2">
+                    <label for="gealEditorStyleName" class="text-sm font-semibold uppercase tracking-widest text-[var(--text-secondary)]">1. Style Name</label>
+                    <input type="text" id="gealEditorStyleName" class="form-input w-full !border !border-[var(--border-color)] !p-2" placeholder="e.g., My Cinematic Style">
+                </div>
+
+                <!-- MODIFIED: Re-organized prompt section, added '2.', Enhance button, and spinner -->
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center">
+                        <label for="gealEditorStylePrompt" class="text-sm font-semibold uppercase tracking-widest text-[var(--text-secondary)]">2. Style Prompt</label>
+                        <div class="flex items-center space-x-2">
+                            <button id="gealEditorRefineBtn" class="btn !p-2" title="Enhance Prompt with AI">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="h-4 w-4" viewBox="0 0 16 16">
+                                    <path d="M9.5 0a.5.5 0 0 1 .5.5.5.5 0 0 0 .5.5.5.5 0 0 1 .5.5V2a.5.5 0 0 1-.5.5.5.5 0 0 0-.5.5.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5.5.5 0 0 0-.5-.5.5.5 0 0 1-.5-.5V.5a.5.5 0 0 1 .5-.5.5.5 0 0 0 .5-.5.5.5 0 0 1 .5-.5h6Z"/>
+                                    <path d="M14 3.5a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 3 3.5V3a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v.5ZM11.5 6a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0v-1a.5.5 0 0 1 .5-.5Zm-3 0a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0v-1a.5.5 0 0 1 .5-.5Zm-3 0a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0v-1a.5.5 0 0 1 .5-.5Z"/>
+                                    <path d="M2 10.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0v-1a.5.5 0 0 1 .5-.5Zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 1 0v-1a.5.5 0 0 0-.5-.5Zm3.5.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0v-1a.5.5 0 0 1 .5-.5Zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 1 0v-1a.5.5 0 0 0-.5-.5Z"/>
+                                    <path d="M2 13.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0v-1a.5.5 0 0 1 .5-.5Zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 1 0v-1a.D5.5 0 0 0-.5-.5Zm3.5.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0v-1a.5.5 0 0 1 .5-.5Zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 1 0v-1a.5.5 0 0 0-.5-.5Z"/>
+                                </svg>
+                            </button>
+                            <div id="gealEditorSpinner" class="simple-spinner hidden"></div>
+                        </div>
+                    </div>
+                    <textarea id="gealEditorStylePrompt" rows="6" class="form-input w-full !border !border-[var(--border-color)] !p-2" placeholder="**Photorealistic**, 8k resolution, cinematic lighting..."></textarea>
+                </div>
+
+                <!-- MODIFIED: Added '3.' -->
+                <div class="space-y-2">
+                    <h4 class="text-sm font-semibold uppercase tracking-widest text-[var(--text-secondary)] border-b border-[var(--border-color)] pb-2">3. Prompt Builder</h4>
+                    
+                    <div id="gealEditorTweakContainer" class="pt-2">
+                        <!-- Tweak buttons will be injected here by JS -->
+                    </div>
+                </div>
+
+            </div>
+            <div class="panel-content border-t border-[var(--border-color)]">
+                <div class="flex justify-end space-x-2">
+                    <button id="gealEditorCancelBtn" class="btn">Cancel</button>
+                    <button id="gealEditorSaveBtn" class="btn btn-primary">Save as New Preset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- NEW: Analyze Style Modal -->
+    <div id="analyzeStyleModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden modal-backdrop">
+        <div class="panel w-full max-w-2xl bg-[var(--bg-primary)] max-h-[90vh] flex flex-col">
+            <div class="panel-header">Analyze Style from Images</div>
+            <div class="panel-content flex-grow overflow-y-auto space-y-6">
+                
+                <div class="space-y-2">
+                    <label for="analyzeStyleName" class="text-sm font-semibold uppercase tracking-widest text-[var(--text-secondary)]">1. Style Name</label>
+                    <input type="text" id="analyzeStyleName" class="form-input w-full !border !border-[var(--border-color)] !p-2" placeholder="e.g., My Watercolor Style">
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="text-sm font-semibold uppercase tracking-widest text-[var(--text-secondary)]">2. Upload Images (Max 5)</h4>
+                    <p class="text-xs text-[var(--text-secondary)]">Upload multiple images (PNG, JPG) that share the same artistic style. The first image will be used as the thumbnail.</p>
+                    <button id="analyzeStyleUploadBtn" class="btn w-full">Upload Images</button>
+                    <input type="file" id="analyzeStyleFileInput" accept="image/*" multiple class="hidden">
+                    <div id="analyzeStyleImagePreview" class="grid grid-cols-3 sm:grid-cols-5 gap-2 pt-2 min-h-[80px] border border-dashed border-[var(--border-color)] p-2">
+                        <!-- Previews will be injected here -->
+                    </div>
+                </div>
+
+            </div>
+            <div class="panel-content border-t border-[var(--border-color)]">
+                <div class="flex justify-end space-x-2">
+                    <button id="analyzeStyleCancelBtn" class="btn">Cancel</button>
+                    <button id="analyzeStyleSaveBtn" class="btn btn-primary">Analyze & Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Box Modal -->
+    <div id="messageBox" class="fixed inset-0 z-[110] flex items-center justify-center p-4 hidden modal-backdrop">
+        <div class="panel w-full max-w-sm text-center bg-[var(--bg-primary)]">
+            <div class="panel-header" id="messageTitle">System Message</div>
+            <div class="panel-content space-y-4">
+                <p id="messageText"></p>
+                <input type="text" id="messageBoxInput" class="form-input w-full p-2 hidden">
+                <div id="messageBoxButtons" class="flex space-x-2 justify-end"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Full Screen Modal -->
+    <div id="fullScreenModal" class="fixed inset-0 z-[90] flex items-center justify-center p-4 hidden modal-backdrop">
+        <div class="relative max-w-full max-h-full">
+            <button id="closeFullScreenModal" class="absolute -top-4 -right-4 text-white text-4xl hover:text-gray-300 transition-colors z-50 p-2">
+                &times;
+            </button>
+            <img id="fullScreenImage" src="" alt="Full Screen Generated Image" class="block max-w-[90vw] max-h-[90vh] object-contain border border-[var(--border-color)]">
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- FIREBASE CONFIG ---
+        const firebaseConfig = {
+  apiKey: "AIzaSyDY3ECh29-wbSkTxcYjo0k_5MbpJ06eW3w",
+  authDomain: "geal-ai-pro.firebaseapp.com",
+  projectId: "geal-ai-pro",
+  storageBucket: "geal-ai-pro.firebasestorage.app",
+  messagingSenderId: "168080953217",
+  appId: "1:168080953217:web:5974fe48ddc868814f6280",
+  measurementId: "G-6221GXB1T4"
+};
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        
+        let db, auth;
+        let userId = null;
+        let customStylesUnsubscribe = null;
+        
+        if (firebaseConfig) {
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+            } catch (e) { console.error("Firebase initialization failed:", e); }
+        } else { console.warn("Firebase config not found."); }
+
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // --- Element Getters ---
+            const getEl = (id) => document.getElementById(id);
+            const generationMode = getEl('generationMode');
+            const editModal = getEl('editModal');
+            const generateBtn = getEl('generateBtn');
+            const imagePrompt = getEl('imagePrompt');
+            const generatedImage = getEl('generatedImage');
+            const imagePlaceholder = getEl('imagePlaceholder');
+            const downloadBtn = getEl('downloadBtn');
+            const editBtn = getEl('editBtn');
+            const describeImageBtn = getEl('describeImageBtn');
+            const imageDescriptionContainer = getEl('imageDescriptionContainer');
+            const imageDescription = getEl('imageDescription');
+            const fileInput = getEl('fileInput');
+            const uploadAssetBtn = getEl('uploadAssetBtn');
+            const uploadedImageContainer = getEl('uploadedImageContainer');
+            const cancelEditBtn = getEl('cancelEditBtn');
+            const messageBox = getEl('messageBox');
+            const messageTitle = getEl('messageTitle');
+            const messageText = getEl('messageText');
+            const styleContainer = getEl('styleContainer');
+            const addAssetTagBtn = getEl('addAssetTagBtn');
+            const assetSelectionPopover = getEl('assetSelectionPopover');
+            const assetTagList = getEl('assetTagList');
+            const addStyleBtn = getEl('addStyleBtn');
+            const importStyleBtn = getEl('importStyleBtn');
+            const importStyleInput = getEl('importStyleInput');
+            const exportStyleBtn = getEl('exportStyleBtn');
+            const clearPromptBtn = getEl('clearPromptBtn');
+            const refinePromptBtn = getEl('refinePromptBtn');
+            const generateIdeaBtn = getEl('generateIdeaBtn');
+            const createStoryBtn = getEl('createStoryBtn');
+            const fullScreenModal = getEl('fullScreenModal');
+            const fullScreenImage = getEl('fullScreenImage');
+            const closeFullScreenModal = getEl('closeFullScreenModal');
+            const imageDisplayArea = getEl('imageDisplayArea');
+            const postImageButtons = getEl('postImageButtons');
+            const cameraViewBtn = getEl('cameraViewBtn');
+            const generateViewBtn = getEl('generateViewBtn');
+            const cameraAngleModal = getEl('cameraAngleModal');
+            const angleOptionsContainer = getEl('angleOptionsContainer');
+            const confirmAngleBtn = getEl('confirmAngleBtn');
+            const cancelAngleBtn = getEl('cancelAngleBtn');
+            const unifiedLoadingOverlay = getEl('unifiedLoadingOverlay');
+            const loaderIconContainer = getEl('loaderIconContainer');
+            const loaderMessage = getEl('loaderMessage');
+            const loaderProgressBar = getEl('loaderProgressBar');
+            const imageCanvas = getEl('imageCanvas');
+            const maskCanvas = getEl('maskCanvas');
+            const brushBtn = getEl('brushBtn');
+            const eraseBtn = getEl('eraseBtn');
+            const resetBtn = getEl('resetBtn');
+            const brushSizeSlider = getEl('brushSizeSlider');
+            const brushSizeValue = getEl('brushSizeValue');
+            const canvasWrapper = getEl('canvasWrapper');
+            const applyChangesBtn = getEl('applyChangesBtn');
+            const inpaintingPrompt = getEl('inpaintingPrompt');
+            const inpaintingRefFileInput = getEl('inpaintingRefFileInput');
+            const uploadInpaintingRefBtn = getEl('uploadInpaintingRefBtn');
+            const removeInpaintingRefBtn = getEl('removeInpaintingRefBtn');
+            const inpaintingRefPreview = getEl('inpaintingRefPreview');
+            const clearAssetsBtn = getEl('clearAssetsBtn');
+            const canvasAspectRatioWrapper = getEl('canvasAspectRatioWrapper');
+            const modePromptBtn = getEl('modePromptBtn');
+            const modeTransferBtn = getEl('modeTransferBtn');
+            const viewModeSelector = getEl('viewModeSelector');
+
+            // --- GEAL Editor Elements ---
+            const gealEditorModal = getEl('gealEditorModal');
+            const gealEditorBtn = getEl('gealEditorBtn');
+            const gealEditorCancelBtn = getEl('gealEditorCancelBtn');
+            const gealEditorSaveBtn = getEl('gealEditorSaveBtn');
+            const gealEditorStyleName = getEl('gealEditorStyleName');
+            const gealEditorStylePrompt = getEl('gealEditorStylePrompt');
+            const gealEditorTweakContainer = getEl('gealEditorTweakContainer');
+            // MODIFIED: Added back refine button and spinner
+            const gealEditorRefineBtn = getEl('gealEditorRefineBtn');
+            const gealEditorSpinner = getEl('gealEditorSpinner');
+
+            // --- NEW: Analyze Style Modal Elements ---
+            const analyzeStyleModal = getEl('analyzeStyleModal');
+            const analyzeStyleName = getEl('analyzeStyleName');
+            const analyzeStyleUploadBtn = getEl('analyzeStyleUploadBtn');
+            const analyzeStyleFileInput = getEl('analyzeStyleFileInput');
+            const analyzeStyleImagePreview = getEl('analyzeStyleImagePreview');
+            const analyzeStyleCancelBtn = getEl('analyzeStyleCancelBtn');
+            const analyzeStyleSaveBtn = getEl('analyzeStyleSaveBtn');
+            let tempAnalyzeImages = []; // State for multi-image analysis
+
+
+            // --- Usage Stats Elements ---
+            const usageStatsEl = getEl('usageStats');
+            let usageStats = { resetTimestamp: 0, generationCount: 0 };
+            let usageStatsInterval = null;
+
+
+            // --- Theme Toggle ---
+            const themeToggle = getEl('theme-toggle');
+            const themeIndicator = getEl('theme-indicator');
+            const themeLabel = getEl('theme-label');
+            const themes = ['dark', 'light', 'dark-azure'];
+            
+            function applyTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                if(themeLabel) themeLabel.textContent = theme.replace('-', ' ');
+                
+                const themeIndex = themes.indexOf(theme); 
+                const indicatorPosition = themeIndex * 24; 
+                themeIndicator.style.transform = `translateX(${indicatorPosition}px)`;
             }
-          ]
-        })
-      });
 
-      const data = await res.json();
-      console.log(data);
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = localStorage.getItem('theme') || 'dark';
+                const currentIndex = themes.indexOf(currentTheme);
+                const nextIndex = (currentIndex + 1) % themes.length;
+                applyTheme(themes[nextIndex]);
+            });
 
-      const imageData = data.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+            applyTheme(localStorage.getItem('theme') || 'dark'); // Apply saved or default theme on load
 
-      if (res.ok && imageData) {
-        const imageSrc = `data:image/png;base64,${imageData}`;
-        imageBox.src = imageSrc;
-        output.textContent = "✅ Image generated successfully!";
-      } else {
-        output.textContent = `❌ Gemini error: ${data.error?.message || "No image returned."}`;
-      }
-    } catch (err) {
-      console.error(err);
-      output.textContent = "❌ Network or API error: " + err.message;
-    }
-  });
-</script>
+            // --- Inpainting Canvas State ---
+            let ctx, maskCtx, isDrawing = false;
+            let brushSize = parseInt(brushSizeSlider.value, 10);
+            let currentTool = 'brush';
 
+            // --- API & App State ---
+            const apiKey = "AIzaSyBvK75_CwE4jKKMiMHeYe6_8vh5tRoYRmU"; // API key is injected by the environment
+            const textMultimodalApi = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const imageUrlApi = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
+            const imageToImageApi = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${apiKey}`;
+            
+            let originalImageData = null, uploadedImages = [], selectedStyleKey = '', customStyles = {};
+            let progressInterval = null, currentCameraAnglePrompt = '', lastGeneratedPrompt = '';
+            let inpaintingReferenceData = null;
+            let styleMode = 'prompt';
+            let currentViewMode = 'rotate_image'; 
+
+            const MAX_ASSETS = 10;
+            const generateId = () => Math.random().toString(36).substring(2, 9) + Date.now(); 
+
+            // --- Style & Angle Definitions ---
+            const defaultStyles = {
+                'realistic': { name: 'Hyper-Realistic', prompt: '**Photorealistic Purity**, **8k resolution**, detailed skin texture, **pore-level detail**, **Canon EOS R3**, 50mm f/1.4 prime lens, minimal chromatic aberration, natural light, **subtle subsurface scattering**, high dynamic range, **clean cinematic lighting**, editorial quality, highly realistic.' },
+                'dreamworks': { name: '3D Animation', prompt: '**3D Animated Feature Film Style**, bright, highly stylized character design, **subsurface scattering on skin**, detailed stylized hair, **clean render**, dynamic posing, volumetric lighting, Pixar/Dreamworks aesthetic, **high production value**.' },
+                'traditional': { name: 'Classical Oil Paint', prompt: '**Classical Oil Painting**, heavy impasto, rich texture, deep, saturated color palette, **chiaroscuro lighting**, visible brushstrokes, **Renaissance master style** by Rembrandt and Tizian, **museum quality**.' },
+                'digital': { name: 'Detailed Concept Art', prompt: '**Hyper-Detailed Digital Concept Art**, smooth blending, **intense rendering quality**, crisp edges, **ArtStation trending**, complex sci-fi/fantasy design, **high contrast**, industrial color palette, **concept artist portfolio piece** by Greg Rutkowski and Ruan Jia.' },
+                'retro': { name: '16-bit JRPG Pixel', prompt: '**16-bit JRPG Pixel Art**, restricted color palette (e.g., 64 colors), 4:3 aspect ratio, **sharp pixel definition**, dithering for shading, **low resolution, high-fidelity sprite art** by a dedicated pixel artist.' },
+                'cinematic': { name: 'Cinematic Film', prompt: '**Modern Cinematic Photography**, wide screen aspect (2.35:1), **Lut applied**, deep shadows, **anamorphic bokeh**, strong, directional backlight, **Kodak Portra 400 film stock**, subtle film grain, **Steven Spielberg lighting**, epic mood.' },
+                'watercolor': { name: 'Loose Watercolor', prompt: '**Loose Watercolor Sketch**, wet-on-wet technique, visible paper texture, **translucent color overlays**, soft edges, **minimal line art**, delicate and airy atmosphere, sketch style, limited palette.' },
+                'gothic': { name: 'Neo-Gothic Illustration', prompt: '**Neo-Gothic Illustration**, dark, heavily muted color scheme (blacks, deep reds, cold blues), **sharp, spiky shapes**, dramatic silhouettes, **detailed intricate scrollwork**, heavy use of textures and cross-hatching, focused ambient light.' },
+                'manga': { name: 'Manga Panel (B&W)', prompt: '**High-Contrast Manga Panel**, **crisp, clean black and white ink line art**, **detailed cross-hatching for shadows**, **extensive use of digital screentones** for shading and texture, dynamic composition, expressive speed lines, **Japanese comic book aesthetic**.' },
+                 'anime': { name: 'Modern Anime', prompt: '**Modern Anime Aesthetic**, **Vibrant and highly saturated colors**, clean, sharp **cel-shading**, meticulous attention to environmental detail (Shinkai-style backgrounds), smooth lighting gradients, large, expressive eyes, digital painting texture.'},
+                'studio-ghibli': { name: 'Studio Ghibli (90s Art)', prompt: '**Classic Studio Ghibli Aesthetic**, **Meticulously detailed, hand-drawn background art**, lush natural elements, **painterly watercolor look for environment**, simplified characters with minimal, expressive line art, **flat, uniform cel-shading** (no complex rendering), nostalgic and warm color palette, sense of wonder.' },
+                'steampunk': { name: 'Intricate Steampunk', prompt: '**Intricate Steampunk Concept**, polished brass and copper textures, complex clockwork mechanisms, **Victorian-era clothing and architecture**, aged leather, **sepia and dark metallic color palette**, detailed blueprint overlays, **fine engraving style**.' },
+            };
+            
+            const cameraAngles = {
+                'Vertical Placement (Height)': [
+                    { name: 'Eye Level (Neutral)', prompt: 'shot from the eye-level, neutral perspective, 50mm lens, comfortable depth of field' },
+                    { name: 'Low Angle (Dominance)', prompt: 'dramatic low angle shot, 24mm wide-angle lens, subject appears dominant and imposing' },
+                    { name: 'High Angle (Vulnerability)', prompt: 'high angle shot, 85mm telephoto lens, subject appears smaller and vulnerable' },
+                    { name: 'Bird\'s Eye (Overhead)', prompt: 'extreme overhead shot, top-down view, 14mm lens, deep depth of field' },
+                    { name: 'Worm\'s Eye (Ground-Up)', prompt: 'shot from ground level looking up, emphasizing height and scale, 20mm lens' }
+                ],
+                'Horizontal Rotation (Perspective)': [
+                    { name: 'Front Profile (0°)', prompt: 'straight front-facing profile, centered, symmetrical composition, 100mm lens, sharp focus' },
+                    { name: 'Left Profile (3/4)', prompt: 'three-quarter profile view from the left, dynamic pose, 35mm lens, cinematic side lighting' },
+                    { name: 'Right Profile (3/4)', prompt: 'three-quarter profile view from the right, moody and dramatic lighting, 50mm lens, shallow depth of field' },
+                    { name: 'Side View (90°)', prompt: 'direct side view (90-degree angle), 85mm lens, silhouette effect' },
+                    { name: 'Rear View (180°)', prompt: 'full rear-facing view, back turned to camera, 135mm lens, focusing on texture and form' }
+                ],
+                'Distance & Framing (Scale)': [
+                    { name: 'Extreme Close-Up', prompt: 'extreme close-up shot, capturing fine texture and micro-detail, macro lens, ultra-shallow depth of field' },
+                    { name: 'Medium Shot (Torso)', prompt: 'medium shot, framing from the waist up, 50mm lens, soft focus background' },
+                    { name: 'Full Body Shot', prompt: 'full body shot, showing entire figure and environment context, 35mm lens' },
+                    { name: 'Wide / Establishing', prompt: 'establishing wide shot, subject small in the expansive frame, 24mm lens, deep depth of field' },
+                    { name: 'Over-the-Shoulder (OTS)', prompt: 'over-the-shoulder perspective (OTS), shallow depth of field, focused on the foreground subject' }
+                ],
+                'Dynamic & Stylistic (Action)': [
+                    { name: 'Dutch Angle (Canted)', prompt: 'dutch angle (canted frame), creating tension and unease, 28mm lens' },
+                    { name: 'POV (First Person)', prompt: 'point of view shot (first person), lens distortion, motion blur, 16mm lens' },
+                    { name: 'Tracking Shot', prompt: 'low-speed tracking shot, slight motion blur on the background, 50mm lens' }
+                ]
+            };
+
+            // --- Style Tweak Definitions ---
+            // MODIFIED: Re-organized lighting/color/contrast
+            const styleTweaks = {
+                'Core Style': [
+                    "**Photorealistic Purity**", "**3D Animated Feature Film Style**", "**Classical Oil Painting**",
+                    "**Hyper-Detailed Digital Concept Art**", "**16-bit JRPG Pixel Art**", "**Modern Cinematic Photography**",
+                    "**Loose Watercolor Sketch**", "**Neo-Gothic Illustration**", "**High-Contrast Manga Panel**",
+                    "**Modern Anime Aesthetic**", "**Classic Studio Ghibli Aesthetic**", "**Intricate Steampunk Concept**",
+                    "**Claymation Style**", "**Low-poly 3D Render**", "**Technical Blueprint Drawing**"
+                ],
+                'Detail & Quality': [
+                    "**8k resolution**", "**Hyper-detailed**", "**Pore-level detail**", "**Intricate**",
+                    "**Clean cinematic lighting**", "**Museum quality**", "**ArtStation trending**", "**Intense rendering quality**",
+                    "**High production value**", "**Meticulously detailed**"
+                ],
+                'Texture & Effect': [
+                    "**Subtle subsurface scattering**", "Heavy impasto", "Visible brushstrokes", "Dithering for shading",
+                    "Visible paper texture", "Translucent color overlays", "Heavy use of textures", "Digital screentones",
+                    "Polished brass and copper", "Aged leather", "Film grain", "Motion blur", "Anamorphic bokeh",
+                    "Minimal chromatic aberration"
+                ],
+                'Lighting': [ // Changed from 'Lighting & Color'
+                    "Natural light", "High dynamic range", "Volumetric lighting", "Chiaroscuro lighting",
+                    "Strong directional backlight", "Focused ambient light", "Studio lighting", "Rim lighting",
+                    "Soft, diffused lighting"
+                ],
+                'Color Palette': [ // New category
+                    "Vibrant and saturated colors", "Muted color scheme", "Restricted color palette", "Sepia and dark metallic",
+                    "Monochromatic", "Analogous colors", "Complementary colors", "Pastel palette", "Neon palette", "Warm color temperature"
+                ],
+                'Contrast & Mood': [ // New category
+                    "High contrast", "Low contrast", "Deep shadows", "Flat lighting", "Moody atmosphere", "Bright and airy",
+                    "Soft focus", "Blown-out highlights", "Dramatic silhouette"
+                ],
+                'Lens & Camera': [
+                    "50mm f/1.4 prime lens", "24mm wide-angle lens", "85mm telephoto lens", "14mm lens",
+                    "Macro lens", "35mm lens", "Low angle shot", "High angle shot", "Top-down view",
+                    "Dutch angle", "Wide screen aspect (2.35:1)"
+                ],
+                'Transformations & Modifications': [
+                    "turn into clay", "make it metallic", "add anime texture skin", "make the hair minimal",
+                    "render as a technical blueprint", "shatter into pieces", "turn into chrome", 
+                    "convert to neon lines", "make it ( SUBJECT ) only"
+                ]
+            };
+            
+            // --- Core Functions ---
+
+            function getBaseImageInfo() {
+                if (uploadedImages.length > 0) return { dataUrl: uploadedImages[0].dataUrl, isUploaded: true };
+                if (originalImageData) return { dataUrl: originalImageData, isUploaded: false };
+                return null;
+            }
+
+            function updateStyleMode(mode) {
+                styleMode = mode;
+                [modePromptBtn, modeTransferBtn].forEach(btn => {
+                    btn.classList.toggle('selected', btn.dataset.mode === mode);
+                });
+                updateGenerateButton();
+            }
+
+            function updateViewMode(mode) {
+                currentViewMode = mode;
+                viewModeSelector.querySelectorAll('.view-mode-btn').forEach(btn => {
+                    btn.classList.toggle('selected', btn.dataset.mode === mode);
+                });
+                confirmAngleBtn.disabled = !currentCameraAnglePrompt;
+            }
+
+            function updateGenerateButton() {
+                const isStyleSelected = !!selectedStyleKey;
+                const baseImage = getBaseImageInfo();
+                const requiresTransfer = styleMode === 'transfer';
+                const canApplyStyle = requiresTransfer && isStyleSelected && baseImage;
+
+                if (canApplyStyle) {
+                    generateBtn.textContent = 'Apply Style';
+                    generateBtn.classList.add('btn-apply-style');
+                    generateBtn.classList.remove('btn-primary');
+                    generateBtn.disabled = false;
+                } else if (styleMode === 'prompt') {
+                    generateBtn.textContent = 'Generate';
+                    generateBtn.classList.remove('btn-apply-style');
+                    generateBtn.classList.add('btn-primary');
+                    generateBtn.disabled = !imagePrompt.value.trim() && !isStyleSelected; 
+                } else {
+                    generateBtn.textContent = 'Apply Style';
+                    generateBtn.classList.remove('btn-apply-style');
+                    generateBtn.classList.add('btn-primary');
+                    generateBtn.disabled = true;
+                }
+            }
+
+            // UPDATED: createStyleButton to include view prompt icon
+            function createStyleButton(key, style, isCustom = false) {
+                const btn = document.createElement('button');
+                btn.className = `style-btn ${key === selectedStyleKey ? 'selected' : ''}`;
+                btn.dataset.styleKey = key;
+
+                // 1. View Prompt Button (Top-Left)
+                const viewPromptBtn = document.createElement('div');
+                viewPromptBtn.className = 'view-prompt-btn';
+                viewPromptBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="h-4 w-4" viewBox="0 0 16 16"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.12 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/></svg>`;
+                viewPromptBtn.title = 'View Prompt';
+                viewPromptBtn.onclick = (e) => {
+                    e.stopPropagation(); // Don't select the style
+                    const allStyles = {...defaultStyles, ...customStyles};
+                    const styleData = allStyles[key];
+                    if (styleData) {
+                        showMessageBox(styleData.name, styleData.prompt);
+                    }
+                };
+                // Will be appended at the end to be on top
+                
+                // 2. Content
+                if (isCustom) {
+                    btn.classList.add('custom-style-btn', 'flex', 'flex-col');
+                    if (style.imageDataUrl) {
+                        btn.innerHTML = `<img src="${style.imageDataUrl}" alt="${style.name}" class="style-thumbnail"><span>${style.name}</span>`;
+                    } else {
+                        btn.textContent = style.name;
+                    }
+                    
+                    // 3. Remove Button (Top-Right)
+                    const removeBtn = document.createElement('div');
+                    removeBtn.className = 'remove-style-btn';
+                    removeBtn.innerHTML = '&times;';
+                    removeBtn.title = 'Delete this style';
+                    removeBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        deleteCustomStyle(key);
+                    };
+                    btn.appendChild(removeBtn);
+
+                } else {
+                    btn.textContent = style.name;
+                }
+                
+                // Append View Prompt Button *last* so it's on top
+                btn.appendChild(viewPromptBtn);
+
+                btn.addEventListener('click', () => {
+                    selectedStyleKey = selectedStyleKey === key ? '' : key;
+                    renderStyles();
+                    updateGenerateButton(); 
+                    exportStyleBtn.disabled = !selectedStyleKey;
+                });
+                styleContainer.appendChild(btn);
+            }
+
+            function renderStyles() {
+                styleContainer.innerHTML = '';
+                Object.keys(defaultStyles).forEach(key => createStyleButton(key, defaultStyles[key], false));
+                Object.keys(customStyles).forEach(key => createStyleButton(key, customStyles[key], true));
+                exportStyleBtn.disabled = !selectedStyleKey;
+            }
+            
+            function renderAngleOptions() {
+                angleOptionsContainer.innerHTML = '';
+                Object.keys(cameraAngles).forEach(category => {
+                    const categoryHeader = document.createElement('h5');
+                    categoryHeader.className = 'angle-category';
+                    categoryHeader.textContent = category;
+                    angleOptionsContainer.appendChild(categoryHeader);
+
+                    cameraAngles[category].forEach(angle => {
+                        const btn = document.createElement('button');
+                        btn.className = `btn w-full angle-btn-detail ${angle.prompt === currentCameraAnglePrompt ? 'selected' : ''}`;
+                        btn.dataset.anglePrompt = angle.prompt;
+                        btn.textContent = angle.name;
+                        
+                        btn.addEventListener('click', () => {
+                            currentCameraAnglePrompt = angle.prompt;
+                            renderAngleOptions();
+                            confirmAngleBtn.disabled = false;
+                        });
+                        angleOptionsContainer.appendChild(btn);
+                    });
+                });
+            }
+
+            function renderGealEditorTweaks() {
+                gealEditorTweakContainer.innerHTML = '';
+                Object.keys(styleTweaks).forEach(category => {
+                    const categoryHeader = document.createElement('h5');
+                    categoryHeader.className = 'angle-category';
+                    categoryHeader.textContent = category;
+                    gealEditorTweakContainer.appendChild(categoryHeader);
+
+                    const buttonContainer = document.createElement('div');
+                    buttonContainer.className = 'flex flex-wrap';
+                    
+                    styleTweaks[category].forEach(tweak => {
+                        const btn = document.createElement('button');
+                        btn.className = 'btn tweak-btn';
+                        btn.dataset.tweakPrompt = tweak;
+                        btn.textContent = tweak.replace(/\*/g, ''); // Remove markdown for display
+                        
+                        btn.addEventListener('click', () => {
+                            const currentPrompt = gealEditorStylePrompt.value.trim();
+                            const separator = (currentPrompt && !currentPrompt.endsWith(',')) ? ', ' : ' ';
+                            gealEditorStylePrompt.value = currentPrompt + separator + tweak;
+                        });
+                        buttonContainer.appendChild(btn);
+                    });
+                    gealEditorTweakContainer.appendChild(buttonContainer);
+                });
+            }
+
+            // --- Usage Stats Functions ---
+            function loadUsageStats() {
+                let stats;
+                try {
+                    stats = JSON.parse(localStorage.getItem('gealUsageStats'));
+                } catch (e) {
+                    console.warn("Could not parse usage stats from localStorage.");
+                }
+
+                if (stats && Date.now() < stats.resetTimestamp) {
+                    usageStats = stats;
+                } else {
+                    // Reset stats
+                    usageStats = {
+                        generationCount: 0,
+                        resetTimestamp: Date.now() + 24 * 60 * 60 * 1000
+                    };
+                    localStorage.setItem('gealUsageStats', JSON.stringify(usageStats));
+                }
+                
+                updateUsageDisplay();
+                if (usageStatsInterval) clearInterval(usageStatsInterval);
+                usageStatsInterval = setInterval(updateUsageDisplay, 1000);
+            }
+
+            function updateUsageDisplay() {
+                const msRemaining = usageStats.resetTimestamp - Date.now();
+                
+                if (msRemaining <= 0) {
+                    loadUsageStats(); // Timer expired, reset everything
+                    return;
+                }
+
+                const hours = Math.floor(msRemaining / (1000 * 60 * 60));
+                const minutes = Math.floor((msRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                
+                if (usageStatsEl) {
+                    const icon = usageStatsEl.querySelector('svg').outerHTML; // Keep the icon
+                    usageStatsEl.innerHTML = `${icon} (${hours}h ${minutes}m / ${usageStats.generationCount}g)`;
+                }
+            }
+
+            function incrementGenerationCount() {
+                usageStats.generationCount++;
+                localStorage.setItem('gealUsageStats', JSON.stringify(usageStats));
+                updateUsageDisplay();
+            }
+
+
+            // --- Firebase & Auth ---
+
+            function setupFirestoreListener() {
+                if (customStylesUnsubscribe) customStylesUnsubscribe();
+                if (!db || !userId) return;
+
+                const stylesCollection = collection(db, `artifacts/${appId}/users/${userId}/custom_styles`);
+                customStylesUnsubscribe = onSnapshot(query(stylesCollection), (snapshot) => {
+                    customStyles = {};
+                    snapshot.forEach(doc => { customStyles[doc.id] = doc.data(); });
+                    renderStyles();
+                }, (error) => console.error("Error listening to custom styles:", error));
+            }
+            
+            async function deleteCustomStyle(styleId) {
+                if (!db || !userId || !styleId) return;
+                try {
+                    const docRef = doc(db, `artifacts/${appId}/users/${userId}/custom_styles`, styleId);
+                    await deleteDoc(docRef);
+                    if (selectedStyleKey === styleId) {
+                        selectedStyleKey = '';
+                        exportStyleBtn.disabled = true;
+                    }
+                    updateGenerateButton();
+                } catch (error) {
+                    console.error("Error deleting style: ", error);
+                    showMessageBox("Error", "Could not delete the custom style.");
+                }
+            }
+
+            if (auth) {
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        setupFirestoreListener();
+                    } else {
+                        const signIn = async () => {
+                            try {
+                                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                                    await signInWithCustomToken(auth, __initial_auth_token);
+                                } else {
+                                    await signInAnonymously(auth);
+                                }
+                            } catch (error) { console.error("Sign-in failed:", error); }
+                        };
+                        signIn();
+                    }
+                });
+            }
+
+            // --- API & Utility Functions ---
+
+            async function fetchWithRetry(url, options, retries = 3) {
+                for (let i = 0; i < retries; i++) {
+                    try {
+                        const response = await fetch(url, options);
+                        if (!response.ok) {
+                            let errorMsg = `API call failed with status: ${response.status}.`;
+                            try {
+                                const errorBody = await response.json();
+                                errorMsg += ` Message: ${errorBody.error?.message || 'Unknown error'}`;
+                            } catch (e) {}
+                            throw new Error(errorMsg);
+                        }
+                        return response;
+                    } catch (error) {
+                        if (i < retries - 1) {
+                            await new Promise(res => setTimeout(res, 1000 * Math.pow(2, i)));
+                        } else { 
+                            console.error("Final fetch attempt failed:", error);
+                            throw error; 
+                        }
+                    }
+                }
+            }
+
+            function handleExportStyle() {
+                if (!selectedStyleKey) {
+                    showMessageBox("Export Error", "Please select a style to export.");
+                    return;
+                }
+                const allStyles = {...defaultStyles, ...customStyles};
+                const styleToExport = allStyles[selectedStyleKey];
+
+                if (!styleToExport) {
+                    showMessageBox("Export Error", "Could not find the selected style data.");
+                    return;
+                }
+
+                const exportData = {
+                    name: styleToExport.name,
+                    prompt: styleToExport.prompt
+                };
+                
+                if (customStyles[selectedStyleKey] && styleToExport.imageDataUrl) {
+                    exportData.imageDataUrl = styleToExport.imageDataUrl;
+                }
+
+                const fileData = JSON.stringify(exportData, null, 2);
+                const blob = new Blob([fileData], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                const fileName = styleToExport.name.toLowerCase().replace(/[^a-z0-9]/g, '_').substring(0, 20) || 'style';
+                a.download = `${fileName}.geal`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+
+            async function handleImportStyle(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                if (!db || !userId) {
+                    showMessageBox("Import Error", "Cannot import style: Database not connected. Please refresh.");
+                    e.target.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = async (event) => {
+                    const fileContent = event.target.result;
+                    let importedStyle;
+                    try {
+                        importedStyle = JSON.parse(fileContent);
+                    } catch (err) {
+                        showMessageBox("Import Error", "Failed to read file. It may be corrupted or not a valid .geal file.");
+                        return;
+                    }
+
+                    if (!importedStyle || typeof importedStyle.name !== 'string' || typeof importedStyle.prompt !== 'string') {
+                        showMessageBox("Import Error", "Invalid file format. The file must contain a 'name' and 'prompt'.");
+                        return;
+                    }
+
+                    const newStyle = {
+                        name: importedStyle.name,
+                        prompt: importedStyle.prompt
+                    };
+
+                    if (importedStyle.imageDataUrl && typeof importedStyle.imageDataUrl === 'string' && importedStyle.imageDataUrl.startsWith('data:image/')) {
+                        newStyle.imageDataUrl = importedStyle.imageDataUrl;
+                    }
+
+                    try {
+                        const docRef = doc(collection(db, `artifacts/${appId}/users/${userId}/custom_styles`));
+                        await setDoc(docRef, newStyle);
+                        showMessageBox("Success", `Style '${newStyle.name}' imported successfully.`);
+                    } catch (error) {
+                        console.error("Error saving imported style:", error);
+                        showMessageBox("Import Error", "Failed to save the imported style to the database.");
+                    }
+                };
+                
+                reader.onerror = () => {
+                    showMessageBox("Import Error", "Failed to read the selected file.");
+                };
+                
+                reader.readAsText(file);
+                e.target.value = '';
+            }
+
+            function showMessageBox(title, message, buttons = [], inputOptions = null) {
+                messageTitle.textContent = title;
+                messageText.textContent = message;
+                const messageBoxInput = getEl('messageBoxInput');
+                const messageBoxButtons = getEl('messageBoxButtons');
+                messageBoxButtons.innerHTML = '';
+                messageBoxInput.classList.add('hidden');
+                messageBoxInput.value = '';
+
+                if (inputOptions) {
+                    messageBoxInput.classList.remove('hidden');
+                    messageBoxInput.placeholder = inputOptions.placeholder || '';
+                    messageBoxInput.value = inputOptions.defaultValue || '';
+                }
+
+                if (buttons.length === 0) buttons.push({ text: 'OK', class: 'btn-primary' });
+
+                buttons.forEach(btnConfig => {
+                    const button = document.createElement('button');
+                    button.className = `btn ${btnConfig.class || ''}`;
+                    button.textContent = btnConfig.text;
+                    button.onclick = () => {
+                        if (btnConfig.action) btnConfig.action(inputOptions ? messageBoxInput.value : null);
+                        messageBox.classList.add('hidden');
+                        document.body.classList.remove('modal-open');
+                    };
+                    messageBoxButtons.appendChild(button);
+                });
+
+                messageBox.classList.remove('hidden');
+                document.body.classList.add('modal-open');
+            }
+            
+            function startProgressSimulation(mode = 'generate') {
+                clearInterval(progressInterval);
+                unifiedLoadingOverlay.classList.remove('hidden');
+                let messages = {
+                    generate: "Generating...", refine: "Thinking...", idea: "Summoning idea...",
+                    story: "Weaving narrative...", view: "Generating new view...", describe: "Analyzing...",
+                    inpainting: "Applying changes...", 
+                    transfer: "Performing deep style transfer...",
+                    style_analysis: "Analyzing style..."
+                };
+                loaderMessage.textContent = messages[mode] || "Processing...";
+                loaderIconContainer.innerHTML = '<div class="simple-loader"></div>';
+
+                let progress = 0;
+                loaderProgressBar.style.width = '0%';
+                
+                progressInterval = setInterval(() => {
+                    progress += Math.random() * 5;
+                    if (progress > 95) progress = 95;
+                    loaderProgressBar.style.width = `${progress}%`;
+                }, 400);
+            }
+
+            function stopProgressSimulation(isSuccess = false) {
+                clearInterval(progressInterval);
+                 if (isSuccess) {
+                    loaderProgressBar.style.width = '100%';
+                    setTimeout(() => { 
+                        unifiedLoadingOverlay.classList.add('hidden'); 
+                        loaderProgressBar.style.width = '0%'; 
+                    }, 500);
+                } else {
+                    unifiedLoadingOverlay.classList.add('hidden');
+                    loaderProgressBar.style.width = '0%';
+                }
+            }
+            
+            const showPostImageControls = () => { if (originalImageData) postImageButtons.classList.remove('hidden'); };
+            const hidePostImageControls = () => { postImageButtons.classList.add('hidden'); imageDescriptionContainer.classList.add('hidden'); generateViewBtn.classList.add('hidden'); };
+            
+            function getNextAssetTitle() {
+                let nextNum = 1;
+                const existingTitles = new Set(uploadedImages.map(img => img.title));
+                while (existingTitles.has(`Asset ${nextNum}`)) nextNum++;
+                return `Asset ${nextNum}`; 
+            }
+
+            function renderUploadedImages() {
+                uploadedImageContainer.innerHTML = ''; 
+                if (uploadedImages.length === 0) {
+                    uploadedImageContainer.innerHTML = '<p class="col-span-full text-sm text-[var(--text-secondary)]">Upload reference images.</p>';
+                }
+                uploadAssetBtn.disabled = uploadedImages.length >= MAX_ASSETS;
+
+                uploadedImages.forEach(image => {
+                    const assetDiv = document.createElement('div');
+                    assetDiv.className = 'asset-card';
+                    assetDiv.dataset.id = image.id;
+                    assetDiv.innerHTML = `
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs truncate" title="${image.title}">${image.title}</span>
+                            <div class="flex space-x-2">
+                                <button data-id="${image.id}" class="btn-replace text-xs p-1" title="Replace">R</button>
+                                <button data-id="${image.id}" class="btn-delete text-xs p-1" title="Delete">X</button>
+                            </div>
+                        </div>
+                        <img src="${image.dataUrl}" alt="${image.title}" class="asset-image-preview">
+                    `;
+                    uploadedImageContainer.appendChild(assetDiv);
+                });
+                
+                uploadedImageContainer.querySelectorAll('.btn-delete').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const id = e.currentTarget.dataset.id;
+                        uploadedImages = uploadedImages.filter(img => img.id !== id);
+                        renderUploadedImages(); updateAssetTagList(); updateGenerateButton(); 
+                    });
+                });
+                
+                uploadedImageContainer.querySelectorAll('.btn-replace').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        fileInput.dataset.replaceId = e.currentTarget.dataset.id;
+                        fileInput.click();
+                    });
+                });
+                updateGenerateButton();
+            }
+
+            function updateAssetTagList() {
+                 assetTagList.innerHTML = '';
+                 if (uploadedImages.length === 0) {
+                     assetTagList.innerHTML = '<p class="text-xs text-[var(--text-secondary)] p-2">No assets.</p>';
+                 } else {
+                     uploadedImages.forEach(image => {
+                        const tagButton = document.createElement('button');
+                        tagButton.className = 'btn !w-full !justify-start !text-xs'; 
+                        tagButton.textContent = `[${image.title}]`;
+                        tagButton.onclick = () => {
+                            imagePrompt.value += ` [${image.title}]`;
+                            assetSelectionPopover.classList.add('hidden');
+                            imagePrompt.focus();
+                        };
+                        assetTagList.appendChild(tagButton);
+                     });
+                 }
+            }
+            
+            async function handleImageGeneration(prompt, mode = 'initial', maskBase64 = null, inpaintingRefBase64 = null) {
+                if (!prompt && styleMode === 'prompt' && !selectedStyleKey) {
+                    return showMessageBox('Input Required', 'Please enter a prompt or select a style preset to generate an image.');
+                }
+                
+                hidePostImageControls();
+                imagePlaceholder.classList.remove('hidden');
+                generatedImage.classList.add('hidden');
+                
+                const allStyles = {...defaultStyles, ...customStyles};
+                const selectedStyle = selectedStyleKey ? allStyles[selectedStyleKey] : null;
+                let payload, apiUrl, base64Data, finalPrompt = prompt;
+
+                const isTransferMode = styleMode === 'transfer'; 
+                const isStyleTransferAction = mode === 'style_transfer' || (mode === 'initial' && isTransferMode && selectedStyle);
+                const baseImageInfo = isStyleTransferAction ? getBaseImageInfo() : null; // Only get base image if it's a transfer action
+
+                if (isTransferMode && (!baseImageInfo || !selectedStyle)) {
+                    showMessageBox('Requirement Missing', 'To apply a style, please select a style preset AND ensure you have either a generated image or an uploaded asset.');
+                    stopProgressSimulation(false);
+                    return;
+                }
+                
+                if (isStyleTransferAction) {
+                    apiUrl = imageToImageApi;
+                    startProgressSimulation('transfer');
+                    
+                    const baseImagePart = { inlineData: { mimeType: "image/png", data: baseImageInfo.dataUrl.split(',')[1] } };
+                    let parts = [baseImagePart];
+                    let textPrompt;
+
+                    const contentGuidance = prompt.trim() 
+                        ? `Use this text prompt for content guidance: "${prompt}".` 
+                        : "Strictly preserve the subject and composition from the base image.";
+
+                    if (selectedStyle.imageDataUrl) {
+                        const styleImagePart = { inlineData: { mimeType: "image/png", data: selectedStyle.imageDataUrl.split(',')[1] } };
+                        parts.push(styleImagePart);
+                        textPrompt = `DEEP STYLE TRANSFER (IMAGE). TASK: Redraw Input Image 1.\nSTYLE: Use the exact artistic style of Input Image 2.\nCONTENT: ${contentGuidance}\nRULE: The new image MUST retain the overall composition of Image 1.`;
+                        parts.push({ text: textPrompt });
+                    } else {
+                        textPrompt = `DEEP STYLE TRANSFER (TEXT). TASK: Redraw the input image.\nSTYLE: ${selectedStyle.prompt}.\nCONTENT: ${contentGuidance}\nRULE: The new image MUST retain the overall composition and subject of the input image, but be completely redrawn in the new style.`;
+                        parts.push({ text: textPrompt });
+                    }
+                    
+                    payload = { contents: [{ parts }], generationConfig: { responseModalities: ['IMAGE'] } };
+                }
+                else {
+                    const simMode = mode === 'view' ? 'view' : (mode === 'inpainting' ? 'inpainting' : 'generate');
+                    startProgressSimulation(simMode);
+                    
+                    if (styleMode === 'prompt' && selectedStyle && selectedStyle.prompt) {
+                        const contentPrompt = prompt ? prompt : "A high-quality image";
+                        finalPrompt = `${contentPrompt}, ${selectedStyle.prompt}`;
+                    }
+                    
+                    if (mode === 'inpainting') {
+                        apiUrl = imageToImageApi;
+                        const originalImageBase64 = originalImageData ? originalImageData.split(',')[1] : null;
+                        const inpaintingText = `INPAINTING. Fill the masked area (indicated by the non-transparent parts of the second image) with: ${finalPrompt}`;
+                        const parts = [
+                             { text: inpaintingText },
+                             { inlineData: { mimeType: "image/png", data: originalImageBase64 } },
+                             { inlineData: { mimeType: "image/png", data: maskBase64 } }
+                        ];
+                        if (inpaintingRefBase64) {
+                            parts.push({ inlineData: { mimeType: "image/png", data: inpaintingRefBase64 } });
+                        }
+                        payload = { contents: [{ parts }], generationConfig: { responseModalities: ['IMAGE'] } };
+                    
+                    } else if (mode === 'view') {
+                        apiUrl = imageToImageApi;
+                        const originalImageBase64 = originalImageData ? originalImageData.split(',')[1] : null;
+                        let viewChangePrompt = "";
+                        const anglePromptDetail = currentCameraAnglePrompt;
+                        
+                        if (currentViewMode === 'rotate_image') {
+                            viewChangePrompt = `NEW CAMERA ANGLE. Re-render the entire scene (subject and background) from this new perspective: '${anglePromptDetail}'. Maintain the original style and character. Original prompt: '${lastGeneratedPrompt}'.`;
+                        } else if (currentViewMode === 'rotate_subject') {
+                            viewChangePrompt = `NEW SUBJECT POSE. Re-render ONLY the main subject from this new perspective: '${anglePromptDetail}'. The background MUST remain exactly the same. Maintain the original style. Original prompt: '${lastGeneratedPrompt}'.`;
+                        }
+                        
+                        const parts = [ { text: viewChangePrompt }, { inlineData: { mimeType: "image/png", data: originalImageBase64 } }];
+                        payload = { contents: [{ parts }], generationConfig: { responseModalities: ['IMAGE'] } };
+                    
+                    } else if (uploadedImages.length > 0) {
+                        apiUrl = imageToImageApi;
+                        const parts = [{ text: finalPrompt }];
+                        uploadedImages.forEach(image => parts.push({ inlineData: { mimeType: "image/png", data: image.dataUrl.split(',')[1] } }));
+                        payload = { contents: [{ parts }], generationConfig: { responseModalities: ['IMAGE'] } };
+                    
+                    } else {
+                        apiUrl = imageUrlApi;
+                        const ratioTag = ', aspect ratio 1:1';
+                        payload = { instances: [{ prompt: finalPrompt + ratioTag }], parameters: { sampleCount: 1 } };
+                    }
+                }
+                
+                try {
+                    const response = await fetchWithRetry(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    const result = await response.json();
+                    
+                    if (apiUrl === imageUrlApi) {
+                        base64Data = result?.predictions?.[0]?.bytesBase64Encoded;
+                    } else {
+                        base64Data = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
+                    }
+
+                    if (!base64Data) throw new Error(result?.error?.message || "No image data returned from API.");
+                    
+                    const imageUrl = `data:image/png;base64,${base64Data}`;
+                    originalImageData = imageUrl;
+                    generatedImage.src = imageUrl;
+                    
+                    if (mode === 'initial' || mode === 'style_transfer') {
+                        lastGeneratedPrompt = finalPrompt;
+                    }
+                    
+                    generatedImage.onload = () => {
+                        stopProgressSimulation(true);
+                        generatedImage.classList.remove('hidden');
+                        imagePlaceholder.classList.add('hidden');
+                        showPostImageControls(); 
+                        if (mode === 'inpainting') showMessageBox("Success!", "Inpainting complete.");
+                        if (isStyleTransferAction) showMessageBox("Style Applied", `Image Style successfully applied.`);
+                        updateGenerateButton();
+                        incrementGenerationCount();
+                    };
+                    generatedImage.onerror = () => {
+                         throw new Error("Failed to load generated image data.");
+                    }
+                } catch (error) {
+                    stopProgressSimulation(false);
+                    console.error('Error generating image:', error);
+                    showMessageBox("Generation Error", `Failed: ${error.message}`);
+                }
+            }
+            
+            // --- Inpainting Canvas Functions ---
+
+            function setupInpaintingCanvas() {
+                if (!originalImageData) return;
+                const img = new Image();
+                img.onload = () => {
+                    imageCanvas.width = maskCanvas.width = img.naturalWidth;
+                    imageCanvas.height = maskCanvas.height = img.naturalHeight;
+                    imageCanvas.style.width = maskCanvas.style.width = '100%';
+                    imageCanvas.style.height = maskCanvas.style.height = '100%'; 
+
+                    const ratioWrapper = getEl('canvasAspectRatioWrapper');
+                    canvasWrapper.style.width = ratioWrapper.clientWidth + 'px';
+                    canvasWrapper.style.height = ratioWrapper.clientHeight + 'px';
+
+                    ctx = imageCanvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    maskCtx = maskCanvas.getContext('2d');
+                    maskCtx.fillStyle = 'rgba(13, 153, 255, 0.5)';
+                    maskCtx.lineCap = 'round';
+                    maskCtx.lineJoin = 'round';
+                    imageCanvas.classList.remove('hidden');
+                    resetMask(); setTool('brush');
+                };
+                img.src = originalImageData;
+            }
+
+            function setTool(tool) {
+                currentTool = tool;
+                brushBtn.classList.toggle('btn-primary', tool === 'brush');
+                eraseBtn.classList.toggle('btn-primary', tool === 'erase');
+            }
+
+            function getCoords(e) {
+                const rect = maskCanvas.getBoundingClientRect();
+                const scaleX = maskCanvas.width / rect.width;
+                const scaleY = maskCanvas.height / rect.height;
+                let clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                let clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return { 
+                    x: (clientX - rect.left) * scaleX, 
+                    y: (clientY - rect.top) * scaleY, 
+                    scale: scaleX
+                };
+            }
+
+            function drawOnCanvas(coords) {
+                if (!isDrawing || !maskCtx) return;
+                maskCtx.lineWidth = brushSize * coords.scale;
+                maskCtx.globalCompositeOperation = (currentTool === 'erase') ? 'destination-out' : 'source-over';
+                maskCtx.strokeStyle = maskCtx.fillStyle;
+                maskCtx.lineTo(coords.x, coords.y);
+                maskCtx.stroke();
+                maskCtx.beginPath();
+                maskCtx.moveTo(coords.x, coords.y);
+            }
+
+            function handleDrawStart(e) { e.preventDefault(); isDrawing = true; const coords = getCoords(e); maskCtx.beginPath(); maskCtx.moveTo(coords.x, coords.y); drawOnCanvas(coords); }
+            function handleDrawMove(e) { if (!isDrawing) return; e.preventDefault(); drawOnCanvas(getCoords(e)); }
+            function handleDrawEnd() { if (!isDrawing) return; isDrawing = false; maskCtx.beginPath(); }
+            function resetMask() { if(maskCtx) maskCtx.clearRect(0, 0, maskCanvas.width, maskCanvas.height); }
+            
+            function getMaskBase64() { 
+                return maskCanvas.toDataURL('image/png').split(',')[1]; 
+            }
+
+            applyChangesBtn.addEventListener('click', async () => {
+                const prompt = inpaintingPrompt.value.trim();
+                if (!prompt) {
+                     showMessageBox("Input Required", "Please describe what you want to add.");
+                     return;
+                }
+                if (!originalImageData) return;
+                editModal.classList.add('hidden');
+                document.body.classList.remove('modal-open');
+                await handleImageGeneration(prompt, 'inpainting', getMaskBase64(), inpaintingReferenceData ? inpaintingReferenceData.split(',')[1] : null);
+            });
+            
+            // --- LLM Text & Analysis Functions ---
+
+            const llmAction = async (prompt, simulation, outputTarget = null) => {
+                startProgressSimulation(simulation);
+                let resultText;
+                try {
+                    const baseImageInfo = getBaseImageInfo();
+                    if (!baseImageInfo) throw new Error("No image to analyze.");
+                    
+                    const payload = { contents: [{ parts: [ { text: prompt }, { inlineData: { mimeType: "image/png", data: baseImageInfo.dataUrl.split(',')[1] } } ] }] };
+                    const response = await fetchWithRetry(textMultimodalApi, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    const result = await response.json();
+                    resultText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (!resultText) throw new Error("No text returned from API.");
+                    
+                    if(outputTarget === 'description') {
+                        imageDescription.textContent = resultText;
+                        imageDescriptionContainer.classList.remove('hidden');
+                    } else if(outputTarget === 'story') {
+                        showMessageBox("A Spark of Story", resultText, [{ text: "Awesome!", class: "btn-primary"}]);
+                    } else if (outputTarget === 'prompt') {
+                        imagePrompt.value = resultText.trim();
+                    }
+                } catch (error) { showMessageBox("Error", `Could not complete action: ${error.message}`);
+                } finally { stopProgressSimulation(true); }
+            };
+
+            const llmTextOnlyAction = async (prompt, systemPrompt, simulation, inlineSpinnerElement = null) => {
+                 if (!inlineSpinnerElement) {
+                    startProgressSimulation(simulation);
+                } else {
+                    inlineSpinnerElement.classList.remove('hidden');
+                    const btn = inlineSpinnerElement.previousElementSibling;
+                    if(btn && btn.tagName === 'BUTTON') btn.disabled = true;
+                }
+                 
+                 try {
+                     const payload = { contents: [{ parts: [{ text: prompt }] }], systemInstruction: { parts: [{ text: systemPrompt }] },};
+                     const response = await fetchWithRetry(textMultimodalApi, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                     const result = await response.json();
+                     const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                     if (!text) throw new Error("No text returned from API.");
+                     return text.trim();
+                 } catch (error) { 
+                     showMessageBox("Error", `Could not complete action: ${error.message}`);
+                     return null;
+                 } finally { 
+                     if (!inlineSpinnerElement) {
+                        stopProgressSimulation(true); 
+                    } else {
+                        inlineSpinnerElement.classList.add('hidden');
+                        const btn = inlineSpinnerElement.previousElementSibling;
+                        if(btn && btn.tagName === 'BUTTON') btn.disabled = false;
+                    }
+                 }
+            }
+            
+            // REMOVED: detectImageStyle(imageDataUrl) - Superseded by modal logic
+
+            // --- Event Listeners ---
+
+            // Prompt Section
+            clearPromptBtn.addEventListener('click', () => { imagePrompt.value = ''; updateGenerateButton(); });
+            imagePrompt.addEventListener('input', updateGenerateButton);
+            refinePromptBtn.addEventListener('click', async () => {
+                if (!imagePrompt.value.trim()) return;
+                const text = await llmTextOnlyAction(imagePrompt.value, "You enhance AI image prompts. Make this more descriptive and vivid. Return only the prompt.", 'refine');
+                if (text) {
+                    imagePrompt.value = text;
+                    updateGenerateButton(); 
+                }
+            });
+            generateIdeaBtn.addEventListener('click', async () => {
+                const text = await llmTextOnlyAction("A creative, visually-rich prompt idea for an AI image.", "You are an AI idea generator. Return only a single prompt idea, nothing else.", 'idea');
+                if (text) {
+                    imagePrompt.value = text;
+                    updateGenerateButton(); 
+                }
+            });
+
+            // Asset Section
+            uploadAssetBtn.addEventListener('click', () => { if (uploadedImages.length < MAX_ASSETS) { delete fileInput.dataset.replaceId; fileInput.click(); }});
+            clearAssetsBtn.addEventListener('click', () => { uploadedImages = []; renderUploadedImages(); updateAssetTagList(); updateGenerateButton(); });
+            addAssetTagBtn.addEventListener('click', (e) => { updateAssetTagList(); assetSelectionPopover.classList.toggle('hidden'); e.stopPropagation(); });
+            document.addEventListener('click', (e) => { if (!assetSelectionPopover.contains(e.target) && !addAssetTagBtn.contains(e.target)) assetSelectionPopover.classList.add('hidden'); });
+            fileInput.addEventListener('change', async (e) => {
+                const files = Array.from(e.target.files).filter(f => f.type.startsWith('image/'));
+                if (files.length === 0) return;
+
+                if (e.target.dataset.replaceId) {
+                    const file = files[0];
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const dataUrl = event.target.result;
+                        const asset = uploadedImages.find(img => img.id === e.target.dataset.replaceId);
+                        if (asset) asset.dataUrl = dataUrl;
+                        delete e.target.dataset.replaceId;
+                        renderUploadedImages();
+                        updateAssetTagList();
+                        updateGenerateButton();
+                    };
+                    reader.readAsDataURL(file);
+                } 
+                else {
+                    const spaceAvailable = MAX_ASSETS - uploadedImages.length;
+                    if (spaceAvailable <= 0) {
+                         showMessageBox("Asset Limit Reached", `You already have the maximum of ${MAX_ASSETS} assets.`);
+                         e.target.value = '';
+                         return;
+                    }
+
+                    const filesToUpload = files.slice(0, spaceAvailable);
+                    if (files.length > filesToUpload.length) {
+                        showMessageBox("Asset Limit Reached", `You can only upload ${MAX_ASSETS} total assets. Adding the first ${filesToUpload.length} image(s).`);
+                    }
+
+                    const readPromises = filesToUpload.map(file => {
+                        return new Promise((resolve, reject) => {
+                            const reader = new FileReader();
+                            reader.onload = (event) => resolve(event.target.result);
+                            reader.onerror = (error) => reject(error);
+                            reader.readAsDataURL(file);
+                        });
+                    });
+
+                    try {
+                        const dataUrls = await Promise.all(readPromises);
+                        dataUrls.forEach(dataUrl => {
+                            if (uploadedImages.length < MAX_ASSETS) {
+                                uploadedImages.push({ id: generateId(), dataUrl, title: getNextAssetTitle() });
+                            }
+                        });
+                        renderUploadedImages();
+                        updateAssetTagList();
+                        updateGenerateButton();
+                    } catch (error) {
+                        console.error("Error reading files:", error);
+                        showMessageBox("Upload Error", "There was an error reading one or more files.");
+                    }
+                }
+                
+                e.target.value = '';
+            });
+
+            // Style Section
+            addStyleBtn.addEventListener('click', () => {
+                if (!db || !userId) {
+                    showMessageBox("Notice", "Custom styles require a database connection (which seems to be missing).");
+                    return;
+                }
+                tempAnalyzeImages = [];
+                analyzeStyleName.value = '';
+                analyzeStyleImagePreview.innerHTML = '';
+                analyzeStyleModal.classList.remove('hidden');
+                document.body.classList.add('modal-open');
+            });
+            importStyleBtn.addEventListener('click', () => importStyleInput.click());
+            importStyleInput.addEventListener('change', handleImportStyle);
+            exportStyleBtn.addEventListener('click', handleExportStyle);
+            modePromptBtn.addEventListener('click', () => updateStyleMode('prompt'));
+            modeTransferBtn.addEventListener('click', () => updateStyleMode('transfer'));
+
+            // --- Analyze Style Modal Listeners ---
+            analyzeStyleUploadBtn.addEventListener('click', () => analyzeStyleFileInput.click());
+            
+            analyzeStyleCancelBtn.addEventListener('click', () => {
+                analyzeStyleModal.classList.add('hidden');
+                document.body.classList.remove('modal-open');
+            });
+
+            analyzeStyleFileInput.addEventListener('change', async (e) => {
+                const files = Array.from(e.target.files).filter(f => f.type.startsWith('image/'));
+                if (files.length === 0) return;
+
+                const MAX_ANALYZE = 5;
+                tempAnalyzeImages = [];
+                analyzeStyleImagePreview.innerHTML = '';
+                e.target.value = ''; // Clear input
+
+                const filesToProcess = files.slice(0, MAX_ANALYZE);
+                if (files.length > MAX_ANALYZE) {
+                    showMessageBox("Limit Reached", `You can analyze a maximum of ${MAX_ANALYZE} images at once.`);
+                }
+
+                const readPromises = filesToProcess.map(file => {
+                    return new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = (event) => resolve({ dataUrl: event.target.result, file: file }); // Store file for mime type
+                        reader.onerror = (error) => reject(error);
+                        reader.readAsDataURL(file);
+                    });
+                });
+
+                try {
+                    const images = await Promise.all(readPromises);
+                    tempAnalyzeImages = images;
+                    
+                    images.forEach(img => {
+                        const imgEl = document.createElement('img');
+                        imgEl.src = img.dataUrl;
+                        imgEl.className = 'w-full h-auto object-cover border border-[var(--border-color)]';
+                        analyzeStyleImagePreview.appendChild(imgEl);
+                    });
+                } catch (error) {
+                    showMessageBox("Upload Error", "There was an error reading one or more files.");
+                }
+            });
+
+            analyzeStyleSaveBtn.addEventListener('click', async () => {
+                const name = analyzeStyleName.value.trim();
+                if (!name) {
+                    showMessageBox("Input Required", "Please provide a Style Name.");
+                    return;
+                }
+                if (tempAnalyzeImages.length === 0) {
+                    showMessageBox("Input Required", "Please upload at least one image to analyze.");
+                    return;
+                }
+
+                analyzeStyleModal.classList.add('hidden');
+                document.body.classList.remove('modal-open');
+                startProgressSimulation('style_analysis');
+                
+                try {
+                    const prompt = "Analyze all the following images. Identify the common artistic style they share. Describe this style in a few keywords suitable for an AI image generator's style prompt. For example: '8-bit retro aesthetic, limited color palette' or 'heavy impasto brushstrokes, rich oil paint texture'. Return only the descriptive keywords.";
+                    const parts = [ { text: prompt } ];
+                    tempAnalyzeImages.forEach(img => {
+                        parts.push({ inlineData: { mimeType: img.file.type, data: img.dataUrl.split(',')[1] } });
+                    });
+
+                    const payload = { contents: [{ parts }] };
+                    const response = await fetchWithRetry(textMultimodalApi, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    const result = await response.json();
+                    const detectedStyle = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                    
+                    if (!detectedStyle) throw new Error("Style detection failed or returned no text.");
+
+                    // Save to Firestore
+                    const docRef = doc(collection(db, `artifacts/${appId}/users/${userId}/custom_styles`));
+                    await setDoc(docRef, { 
+                        name: name, 
+                        prompt: detectedStyle.trim(), 
+                        imageDataUrl: tempAnalyzeImages[0].dataUrl // Use first image as thumbnail
+                    });
+                    
+                    stopProgressSimulation(true);
+                    showMessageBox("Success", `Style '${name}' saved successfully.`);
+                    
+                } catch (error) {
+                    stopProgressSimulation(false);
+                    console.error("Error analyzing or saving style:", error);
+                    showMessageBox("Error", `Failed to save style: ${error.message}`);
+                }
+            });
+
+
+            // Main Generate Button
+            generateBtn.addEventListener('click', () => {
+                const isStyleTransfer = (styleMode === 'transfer') && !!selectedStyleKey && !!getBaseImageInfo();
+                handleImageGeneration(imagePrompt.value.trim(), isStyleTransfer ? 'style_transfer' : 'initial');
+            });
+            
+            // Post-Image Controls
+            cameraViewBtn.addEventListener('click', () => { 
+                if (originalImageData) { 
+                    renderAngleOptions(); 
+                    cameraAngleModal.classList.remove('hidden'); 
+                    document.body.classList.add('modal-open');
+                    updateViewMode(currentViewMode); 
+                } 
+            });
+            describeImageBtn.addEventListener('click', () => originalImageData && llmAction("Describe this image in one paragraph.", 'describe', 'description'));
+            createStoryBtn.addEventListener('click', () => originalImageData && llmAction("Write a short, one-paragraph story based on this image.", 'story', 'story'));
+            downloadBtn.addEventListener('click', () => { if (originalImageData) { const a = document.createElement('a'); a.href = originalImageData; a.download = 'geal-ai-pro.png'; a.click(); }});
+            editBtn.addEventListener('click', () => { if (originalImageData) { editModal.classList.remove('hidden'); document.body.classList.add('modal-open'); setTimeout(setupInpaintingCanvas, 50); }});
+
+            // Camera Angle Modal
+            cancelAngleBtn.addEventListener('click', () => { cameraAngleModal.classList.add('hidden'); document.body.classList.remove('modal-open'); });
+            confirmAngleBtn.addEventListener('click', () => {
+                cameraAngleModal.classList.add('hidden');
+                document.body.classList.remove('modal-open');
+                if (currentCameraAnglePrompt) {
+                    let angleName = "Custom Angle";
+                    outerLoop: for (const category in cameraAngles) {
+                        for (const angle of cameraAngles[category]) {
+                            if (angle.prompt === currentCameraAnglePrompt) { angleName = angle.name; break outerLoop; }
+                        }
+                    }
+                    const modeLabel = currentViewMode === 'rotate_image' ? 'Rotate Image (Full View)' : 'Rotate Subject (Background Lock)';
+                    imageDescription.textContent = `Selected View: ${angleName}. Mode: ${modeLabel}.`;
+                    imageDescriptionContainer.classList.remove('hidden');
+                    generateViewBtn.classList.remove('hidden');
+                }
+            });
+            generateViewBtn.addEventListener('click', () => { if (lastGeneratedPrompt && currentCameraAnglePrompt) handleImageGeneration(lastGeneratedPrompt, 'view'); });
+
+            // Edit Modal
+            cancelEditBtn.addEventListener('click', () => { editModal.classList.add('hidden'); document.body.classList.remove('modal-open'); });
+            brushBtn.addEventListener('click', () => setTool('brush'));
+            eraseBtn.addEventListener('click', () => setTool('erase'));
+            resetBtn.addEventListener('click', resetMask);
+            brushSizeSlider.addEventListener('input', (e) => { brushSize = parseInt(e.target.value, 10); brushSizeValue.textContent = brushSize; });
+            
+            uploadInpaintingRefBtn.addEventListener('click', () => inpaintingRefFileInput.click());
+            inpaintingRefFileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    inpaintingReferenceData = event.target.result;
+                    inpaintingRefPreview.src = inpaintingReferenceData;
+                    inpaintingRefPreview.classList.remove('hidden');
+                    removeInpaintingRefBtn.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+                e.target.value = '';
+            });
+            removeInpaintingRefBtn.addEventListener('click', () => {
+                inpaintingReferenceData = null;
+                inpaintingRefPreview.src = '';
+                inpaintingRefPreview.classList.add('hidden');
+                removeInpaintingRefBtn.classList.add('hidden');
+            });
+
+
+            // Full Screen Modal
+            imageDisplayArea.addEventListener('click', () => { if(originalImageData) { fullScreenImage.src = originalImageData; fullScreenModal.classList.remove('hidden'); document.body.classList.add('modal-open'); }});
+            closeFullScreenModal.addEventListener('click', () => { fullScreenModal.classList.add('hidden'); document.body.classList.remove('modal-open'); });
+            
+            // Canvas Listeners
+            maskCanvas.addEventListener('mousedown', handleDrawStart);
+            maskCanvas.addEventListener('mousemove', handleDrawMove);
+            maskCanvas.addEventListener('mouseup', handleDrawEnd);
+            maskCanvas.addEventListener('mouseout', handleDrawEnd);
+            maskCanvas.addEventListener('touchstart', handleDrawStart, { passive: false });
+            maskCanvas.addEventListener('touchmove', handleDrawMove, { passive: false });
+            maskCanvas.addEventListener('touchend', handleDrawEnd);
+
+            // --- GEAL Editor Listeners ---
+            gealEditorBtn.addEventListener('click', () => {
+                if (!db || !userId) {
+                    showMessageBox("Notice", "Style Studio requires a database connection (which seems to be missing). Please refresh.");
+                    return;
+                }
+                gealEditorStyleName.value = '';
+                gealEditorStylePrompt.value = '';
+                gealEditorModal.classList.remove('hidden');
+                document.body.classList.add('modal-open');
+            });
+            gealEditorCancelBtn.addEventListener('click', () => {
+                gealEditorModal.classList.add('hidden');
+                document.body.classList.remove('modal-open');
+            });
+            gealEditorSaveBtn.addEventListener('click', async () => {
+                const name = gealEditorStyleName.value.trim();
+                const prompt = gealEditorStylePrompt.value.trim();
+
+                if (!name || !prompt) {
+                    showMessageBox("Input Required", "Please provide both a Style Name and a Style Prompt.");
+                    return;
+                }
+
+                if (!db || !userId) {
+                    showMessageBox("Error", "Database not connected.Cannot save style.");
+                    return;
+                }
+
+                try {
+                    const docRef = doc(collection(db, `artifacts/${appId}/users/${userId}/custom_styles`));
+                    await setDoc(docRef, { name: name, prompt: prompt });
+                    
+                    gealEditorModal.classList.add('hidden');
+                    document.body.classList.remove('modal-open');
+                    gealEditorStyleName.value = '';
+                    gealEditorStylePrompt.value = '';
+                    
+                    showMessageBox("Success", `Style '${name}' saved successfully.`);
+                } catch (error) {
+                    console.error("Error saving style from editor:", error);
+                    showMessageBox("Error", "Failed to save the new style.");
+                }
+            });
+            
+            // MODIFIED: Added back event listener for enhance button
+            gealEditorRefineBtn.addEventListener('click', async () => {
+                const prompt = gealEditorStylePrompt.value.trim();
+                if (!prompt) {
+                    showMessageBox("Input Required", "Please enter a style prompt to enhance.");
+                    return;
+                }
+                const systemPrompt = "You are an expert prompt engineer for AI image models. You enhance style prompts. Make the given prompt more descriptive, vivid, and technically precise. Return ONLY the enhanced prompt, nothing else.";
+                const enhancedPrompt = await llmTextOnlyAction(prompt, systemPrompt, 'refine', gealEditorSpinner);
+                
+                if (enhancedPrompt) {
+                    gealEditorStylePrompt.value = enhancedPrompt;
+                }
+            });
+
+
+            // --- Initial Setup ---
+            canvasAspectRatioWrapper.style.paddingBottom = '100%'; // Hardcode 1:1
+            renderStyles(); 
+            renderUploadedImages(); 
+            updateAssetTagList(); 
+            updateStyleMode('prompt'); 
+            updateViewMode('rotate_image');
+            renderGealEditorTweaks();
+            loadUsageStats();
+        });
+    </script>
 </body>
 </html>
+
